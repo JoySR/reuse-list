@@ -32,6 +32,7 @@ const actions = {
     commit(types.SET_TOKEN, { token });
   },
   clearToken: ({ commit }) => {
+    tokenConfig.clear('token');
     commit(types.SET_TOKEN, { token: '' });
   },
 };
