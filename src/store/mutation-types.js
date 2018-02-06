@@ -1,6 +1,9 @@
 const types = {
   SET_TOKEN: 'SET_TOKEN',
   SEARCH_ALL: 'SEARCH_ALL',
+  SET_LISTS: 'SEL_LISTS',
+  SET_ALL_ITEMS: 'SET_ALL_ITEMS',
+  SET_CURRENT_LIST_ITEMS: 'SET_CURRENT_LIST_ITEMS',
 };
 
 export default types;
