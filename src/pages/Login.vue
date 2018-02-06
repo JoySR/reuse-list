@@ -17,8 +17,6 @@
   </div>
 </template>
 <script>
-import { login } from '../utils/api';
-
 export default {
   data() {
     return {
@@ -31,21 +29,18 @@ export default {
     submit() {
       if (this.username === '' || this.password === '') return;
       const that = this;
-      login(
-        this.username,
-        this.password,
-        (error) => {
-          if (error) {
-            // TODO: more possibility.
-            // error is an Object.
-            if (error.toString().includes('403')) {
-              this.errMsg = '用户名或密码不正确，请重试。';
-            }
-          } else {
-            that.$router.push('/');
-          }
-        },
-      );
+      this.$store.dispatch('setJwtToken', {
+        username: this.username,
+        password: this.password,
+      }).then(() => {
+        that.$router.push('/');
+      }).catch((error) => {
+        // TODO: more possibility.
+        // error is an Object.
+        if (error.toString().includes('403')) {
+          this.errMsg = '用户名或密码不正确，请重试。';
+        }
+      });
     },
   },
 };
