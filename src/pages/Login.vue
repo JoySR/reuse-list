@@ -28,12 +28,11 @@ export default {
   methods: {
     submit() {
       if (this.username === '' || this.password === '') return;
-      const that = this;
       this.$store.dispatch('setJwtToken', {
         username: this.username,
         password: this.password,
       }).then(() => {
-        that.$router.push('/');
+        this.$router.push('/');
       }).catch((error) => {
         // TODO: more possibility.
         // error is an Object.
