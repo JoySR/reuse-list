@@ -32,6 +32,19 @@ export default {
   },
   methods: {
     submitAddList() {
+      this.$store.dispatch(
+        'createList',
+        { name: this.value },
+      ).then((response) => {
+        if (response.data.name && response.data.name === this.value) {
+          this.$store.dispatch('fetchLists');
+        }
+        // TODO: else?
+        // FIXME: temp disable lint
+        // eslint-disable-next-line
+      }).catch((error) => {
+        // TODO: show error message, use a message component.
+      });
       this.closeModal();
     },
     closeModal() {

@@ -14,6 +14,16 @@ const actions = {
       commit(types.SET_LISTS, { lists: response.data });
     });
   },
+  // eslint-disable-next-line
+  createList: ({ commit }, { name }) => new Promise((resolve, reject) => {
+    axios.post(`${WP_BASE_URL}/reuselist_list`, {
+      name,
+    }).then((response) => {
+      resolve(response);
+    }).catch((error) => {
+      reject(error);
+    });
+  }),
 };
 
 const mutations = {
