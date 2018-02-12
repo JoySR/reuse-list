@@ -7,8 +7,8 @@
     @on-close="closeModal"
   >
     <p>
-      <label for="modal-create">New Item:</label>
-      <input id="modal-create" type="text" v-model="value" />
+      <label for="modal-create--item">New Item:</label>
+      <input id="modal-create--item" type="text" v-model="value" />
     </p>
     <p>
       <label for="modal-create-in">In which List?</label>
