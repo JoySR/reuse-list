@@ -37,10 +37,7 @@ export default {
   methods: {
     submitModal() {
       if (this.enabledSubmit) {
-        this.$emit('on-submit', {
-          value: this.value,
-          list: this.type === 'Item' ? this.inList : null,
-        });
+        this.$emit('on-submit');
       }
     },
     closeModal() {
