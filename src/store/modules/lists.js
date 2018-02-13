@@ -24,6 +24,24 @@ const actions = {
       reject(error);
     });
   }),
+  // eslint-disable-next-line
+  editList: ({ commit }, { id, name }) => new Promise((resolve, reject) => {
+    axios.post(`${WP_BASE_URL}/reuselist_list/${id}`, {
+      name,
+    }).then((response) => {
+      resolve(response);
+    }).catch((error) => {
+      reject(error);
+    });
+  }),
+  // eslint-disable-next-line
+  removeList: ({ commit }, { id }) => new Promise((resolve, reject) => {
+    axios.delete(`${WP_BASE_URL}/reuselist_list/${id}?force=true`).then((response) => {
+      resolve(response);
+    }).catch((error) => {
+      reject(error);
+    });
+  }),
 };
 
 const mutations = {
