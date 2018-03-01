@@ -1,25 +1,10 @@
 <template>
   <div>
     <header-component />
-    <ul>
-      <!-- FIXME: add notes for users that double click is possible. -->
-      <li
-        v-for="list in lists"
-        :key="list.id"
-        @dblclick="activeEdit(list.name)"
-      >
-        <input
-          v-if="editing"
-          title="edit list"
-          type="text"
-          v-model="editingName"
-        />
-        <button v-if="editing" @click="confirmEdit(list.id)">Confirm</button>
-        <button v-if="editing" @click="cancelEdit">Cancel</button>
-        <span v-else>{{ list.name }}</span>
-        <button @click="removeList(list.id)">Remove</button>
-      </li>
-    </ul>
+    <lists
+      :lists="lists"
+      @on-modal-remove-list-control="onModalRemoveListControl"
+    />
     <modal-add-list />
     <modal-add-item />
     <modal
@@ -35,7 +20,9 @@
 </template>
 <script>
 import { mapGetters } from 'vuex';
+import { getLists } from '../utils/common';
 import HeaderComponent from '../components/partial/Header';
+import Lists from '../components/Lists';
 import ModalAddList from '../containers/ModalAddList';
 import ModalAddItem from '../containers/ModalAddItem';
 import Modal from '../components/Modal';
@@ -44,17 +31,15 @@ export default {
   name: 'ListView',
   components: {
     HeaderComponent,
+    Lists,
     ModalAddList,
     ModalAddItem,
     Modal,
   },
   data() {
     return {
-      editing: false,
-      editingName: '',
       shownModalRemoveList: false,
       toRemoveId: '',
-      path: this.$route.name,
     };
   },
   computed: {
@@ -63,43 +48,10 @@ export default {
     }),
   },
   mounted() {
-    this.getLists();
+    getLists();
   },
   methods: {
-    getLists() {
-      this.$store.dispatch('fetchLists');
-    },
-    activeEdit(name) {
-      if (this.editing) return;
-      this.editing = true;
-      this.editingName = name;
-    },
-    confirmEdit(id) {
-      this.$store.dispatch(
-        'editList',
-        {
-          id,
-          name: this.editingName,
-        },
-      ).then((response) => {
-        // TODO
-        if (response.data.name && response.data.name === this.editingName) {
-          this.getLists();
-        }
-        // TODO: else?
-        this.cancelEdit();
-        // FIXME: temp disable lint
-        // eslint-disable-next-line
-      }).catch((error) => {
-        // TODO: show error message, use a message component.
-        this.cancelEdit();
-      });
-    },
-    cancelEdit() {
-      this.editing = false;
-      this.editingName = '';
-    },
-    removeList(id) {
+    onModalRemoveListControl({ id }) {
       this.toRemoveId = id;
       this.shownModalRemoveList = true;
     },
@@ -113,7 +65,7 @@ export default {
         },
       ).then((response) => {
         if (response.data.deleted && response.data.previous.id === this.toRemoveId) {
-          this.getLists();
+          getLists();
         }
         // TODO: else?
         this.toRemoveId = '';

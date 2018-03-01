@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import ListView from '../pages/ListView';
+import ItemView from '../pages/ItemView';
 import Login from '../pages/Login';
 import Admin from '../pages/Admin';
 import tokenConfig from '../utils/token';
@@ -18,6 +19,11 @@ const routes = [
     path: '/lists',
     name: 'Lists',
     component: ListView,
+  },
+  {
+    path: '/list/:id/items',
+    name: 'Items',
+    component: ItemView,
   },
   {
     path: '/login',
