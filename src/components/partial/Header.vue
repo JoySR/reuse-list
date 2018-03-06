@@ -14,6 +14,8 @@
     </div>
     <div class="admin-area">
       <!-- TODO: 大屏则分开两个添加 (list, item) 和 admin，小屏则放到下拉菜单 -->
+      <button v-if="token" @click="openModalAddList">Add List</button>
+      <button v-if="token" @click="openModalAddItem">Add Item</button>
       <button v-if="token" @click="logOut">Log Out</button>
       <router-link v-else :to="logInPath">Log In</router-link>
     </div>
@@ -47,6 +49,18 @@ export default {
       ).then(() => {
         this.keyword = '';
       });
+    },
+    openModalAddList() {
+      this.$store.dispatch(
+        'setModalAddList',
+        { shown: true },
+      );
+    },
+    openModalAddItem() {
+      this.$store.dispatch(
+        'setModalAddItem',
+        { shown: true },
+      );
     },
   },
 };

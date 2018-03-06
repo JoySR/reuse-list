@@ -4,6 +4,7 @@ import lists from './modules/lists';
 import items from './modules/items';
 import token from './modules/token';
 import search from './modules/search';
+import common from './modules/common';
 
 Vue.use(Vuex);
 
@@ -15,6 +16,7 @@ export default new Vuex.Store({
     items,
     token,
     search,
+    common,
   },
   strict: debug,
 });
