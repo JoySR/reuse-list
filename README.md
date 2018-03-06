@@ -2,6 +2,13 @@
 
 > Reusable check/todo lists
 
+## TODO
+
+- [ ] archive and restore list(s)
+- [ ] trash and restore list(s)
+- [ ] add option: when all items are checked, restore them immediately, or manually restore checked items in a list.
+- [ ] batch delete
+
 ## Build Setup
 
 ``` bash
