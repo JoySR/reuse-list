@@ -10,8 +10,8 @@
           type="text"
           v-model="editingName"
         />
-        <button v-if="editing" @click="confirmEdit">Confirm</button>
-        <button v-if="editing" @click="cancelEdit">Cancel</button>
+        <button @click="confirmEdit">Confirm</button>
+        <button @click="cancelEdit">Cancel</button>
       </span>
       <span v-else>
         <span
