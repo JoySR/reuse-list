@@ -17,7 +17,7 @@
         <span
           @click="openItemView(list.id)"
         >{{ list.name }}</span>
-        <button  @click="activeEdit(list.id, list.name)">Edit</button>
+        <button @click="activeEdit(list.id, list.name)">Edit</button>
       </span>
       <button @click="removeList(list.id)">Remove</button>
     </li>
