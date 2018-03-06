@@ -21,7 +21,7 @@ const routes = [
     component: ListView,
   },
   {
-    path: '/items',
+    path: '/list/:id/items',
     name: 'Items',
     component: ItemView,
   },
