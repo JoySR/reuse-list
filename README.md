@@ -2,6 +2,13 @@
 
 > Reusable check/todo lists
 
+## TODO
+
+- [ ] archive and restore list(s)
+- [ ] trash and restore list(s)
+- [ ] add option: when all items are checked, restore them immediately, or manually restore checked items in a list.
+- [ ] batch delete
+
 ## Build Setup
 
 ``` bash
@@ -18,10 +25,7 @@ npm run build
 npm run build --report
 
 # run unit tests
-npm run unit
-
-# run all tests
-npm test
+npm run test
 ```
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
