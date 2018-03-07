@@ -1,6 +1,6 @@
 <template>
   <ul>
-    <li v-for="(item, index) in items" :key="index">
+    <li v-for="item in items" :key="item.id">
       <span v-if="editing && editingId === item.id">
         <input
           title="Edit item"
@@ -11,7 +11,6 @@
         <button @click="cancelEdit">Cancel</button>
       </span>
       <span v-else>
-        <input type="checkbox">
         <span
           @dblclick="editItem(item)"
         >{{ item.title.rendered }}</span>
