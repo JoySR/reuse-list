@@ -1,13 +1,16 @@
 <template>
   <div>
     <header-component />
-    <ul v-for="(item, index) in items" :key="index">
-      <li>{{ item.title.rendered }}</li>
+    <ul>
+      <li v-for="(item, index) in items" :key="index">
+        {{ item.title.rendered }}
+      </li>
     </ul>
   </div>
 </template>
 <script>
 import { mapGetters } from 'vuex';
+import { getCurrentListItems } from '../utils/common';
 import HeaderComponent from '../components/partial/Header';
 
 export default {
@@ -22,11 +25,17 @@ export default {
   },
   computed: {
     ...mapGetters({
-      items: 'allItems',
+      items: 'currentListItems',
     }),
   },
   mounted() {
-    this.$store.dispatch('fetchAllItems');
+    this.getCurrentListItems();
+  },
+  methods: {
+    getCurrentListItems() {
+      const id = this.$route.params.id;
+      getCurrentListItems(id);
+    },
   },
 };
 </script>

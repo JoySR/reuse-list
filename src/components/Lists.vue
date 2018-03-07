@@ -43,7 +43,7 @@ export default {
   },
   methods: {
     openItemView(id) {
-      this.$router.push(`/lists/${id}/items`);
+      this.$router.push(`/list/${id}/items`);
     },
     activeEdit(id, name) {
       if (this.editing) return;
