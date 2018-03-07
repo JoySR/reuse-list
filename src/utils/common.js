@@ -4,3 +4,7 @@ import store from '../store';
 export const getLists = () => {
   store.dispatch('fetchLists');
 };
+
+export const getCurrentListItems = (id) => {
+  store.dispatch('fetchCurrentListItems', { listId: id });
+};

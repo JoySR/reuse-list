@@ -1,12 +1,9 @@
 <template>
   <ul>
-    <li
-      v-for="list in lists"
-      :key="list.id"
-    >
-      <span v-if="editing && editingId === list.id">
+    <li v-for="item in items" :key="item.id">
+      <span v-if="editing && editingId === item.id">
         <input
-          title="Edit list"
+          title="Edit item"
           type="text"
           v-model="editingName"
         />
@@ -15,53 +12,50 @@
       </span>
       <span v-else>
         <span
-          @click="openItemView(list.id)"
-        >{{ list.name }}</span>
-        <button @click="activeEdit(list.id, list.name)">Edit</button>
+          @dblclick="editItem(item)"
+        >{{ item.title.rendered }}</span>
       </span>
-      <button @click="removeList(list.id)">Remove</button>
+      <button @click="removeItem(item.id)">Remove</button>
     </li>
   </ul>
 </template>
 <script>
-import { getLists } from '../utils/common';
+import { getCurrentListItems } from '../utils/common';
 
 export default {
+  name: 'Items',
   data() {
     return {
+      listId: this.$route.params.id,
       editing: false,
       editingId: '',
       editingName: '',
     };
   },
   props: {
-    lists: {
+    items: {
       type: Array,
       required: true,
       default: () => [],
     },
   },
   methods: {
-    openItemView(id) {
-      this.$router.push(`/list/${id}/items`);
-    },
-    activeEdit(id, name) {
-      if (this.editing) return;
+    editItem(item) {
+      this.editingId = item.id;
+      this.editingName = item.title.rendered;
       this.editing = true;
-      this.editingId = id;
-      this.editingName = name;
     },
     confirmEdit() {
       this.$store.dispatch(
-        'editList',
+        'editItem',
         {
           id: this.editingId,
           name: this.editingName,
         },
       ).then((response) => {
         // TODO
-        if (response.data.name && response.data.name === this.editingName) {
-          getLists();
+        if (response.data.title && response.data.title.raw === this.editingName) {
+          getCurrentListItems(this.listId);
         }
         // TODO: else?
         this.cancelEdit();
@@ -77,8 +71,8 @@ export default {
       this.editingId = '';
       this.editingName = '';
     },
-    removeList(id) {
-      this.$emit('on-modal-remove-list-control', { id });
+    removeItem(id) {
+      this.$emit('on-modal-remove-item-control', { id });
     },
   },
 };

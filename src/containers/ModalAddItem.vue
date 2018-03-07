@@ -4,7 +4,7 @@
     :shown="shown"
     :enabledSubmit="!!value"
     @on-submit="submitAddItem"
-    @on-close="closeModal"
+    @on-close="cancelModal"
   >
     <p>
       <label for="modal-create--item">New Item:</label>
@@ -12,7 +12,10 @@
     </p>
     <p>
       <label for="modal-create-in">In which List?</label>
-      <select id="modal-create-in" v-model="inList">
+      <select
+        id="modal-create-in"
+        v-model="selectedList"
+      >
         <option
           v-for="list in lists"
           :key="list.id"
@@ -34,8 +37,8 @@ export default {
   },
   data() {
     return {
+      selectedList: '',
       value: '',
-      inList: '',
     };
   },
   computed: {
@@ -44,9 +47,46 @@ export default {
       lists: 'allLists',
     }),
   },
+  watch: {
+    lists() {
+      this.resetSelectedList();
+    },
+  },
   methods: {
+    createItem() {
+      this.$store.dispatch(
+        'createItem',
+        {
+          name: this.value,
+          listId: this.selectedList,
+        },
+      ).then((response) => {
+        if (response.data.title && response.data.title.rendered === this.value) {
+          // show items of the list where the new item added in
+          this.$router.push(`/list/${this.selectedList}/items`);
+          this.resetModal();
+        }
+        // TODO: else?
+        // FIXME: temp disable lint
+        // eslint-disable-next-line
+      }).catch((error) => {
+        // TODO: show error message, use a message component.
+      });
+    },
+    cancelModal() {
+      this.closeModal();
+      this.resetModal();
+    },
     submitAddItem() {
       this.closeModal();
+      this.createItem();
+    },
+    resetSelectedList() {
+      this.selectedList = this.lists.length ? (this.lists)[0].id : '';
+    },
+    resetModal() {
+      this.value = '';
+      this.resetSelectedList();
     },
     closeModal() {
       this.$store.dispatch(

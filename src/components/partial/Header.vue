@@ -19,13 +19,22 @@
       <button v-if="token" @click="logOut">Log Out</button>
       <router-link v-else :to="logInPath">Log In</router-link>
     </div>
+    <modal-add-list />
+    <modal-add-item />
   </div>
 </template>
 <script>
 import { mapGetters } from 'vuex';
+import { getLists } from '../../utils/common';
 import COMMON from '../../utils/config';
+import ModalAddList from '../../containers/ModalAddList';
+import ModalAddItem from '../../containers/ModalAddItem';
 
 export default {
+  components: {
+    ModalAddList,
+    ModalAddItem,
+  },
   data() {
     return {
       title: COMMON.TITLE,
@@ -37,6 +46,9 @@ export default {
     ...mapGetters({
       token: 'getToken',
     }),
+  },
+  mounted() {
+    getLists();
   },
   methods: {
     logOut() {

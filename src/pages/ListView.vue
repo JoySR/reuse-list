@@ -5,8 +5,6 @@
       :lists="lists"
       @on-modal-remove-list-control="onModalRemoveListControl"
     />
-    <modal-add-list />
-    <modal-add-item />
     <modal
       title="Remove List"
       :shown="shownModalRemoveList"
@@ -23,8 +21,6 @@ import { mapGetters } from 'vuex';
 import { getLists } from '../utils/common';
 import HeaderComponent from '../components/partial/Header';
 import Lists from '../components/Lists';
-import ModalAddList from '../containers/ModalAddList';
-import ModalAddItem from '../containers/ModalAddItem';
 import Modal from '../components/Modal';
 
 export default {
@@ -32,8 +28,6 @@ export default {
   components: {
     HeaderComponent,
     Lists,
-    ModalAddList,
-    ModalAddItem,
     Modal,
   },
   data() {
