@@ -17,13 +17,14 @@
         <span
           @click="openItemView(list.id)"
         >{{ list.name }}</span>
-        <button @click="activeEdit(list.id, list.name)">Edit</button>
+        <button v-if="token" @click="activeEdit(list.id, list.name)">Edit</button>
       </span>
-      <button @click="removeList(list.id)">Remove</button>
+      <button v-if="token" @click="removeList(list.id)">Remove</button>
     </li>
   </ul>
 </template>
 <script>
+import { mapGetters } from 'vuex';
 import { getLists } from '../utils/common';
 
 export default {
@@ -40,6 +41,11 @@ export default {
       required: true,
       default: () => [],
     },
+  },
+  computed: {
+    ...mapGetters({
+      token: 'getToken',
+    }),
   },
   methods: {
     openItemView(id) {
