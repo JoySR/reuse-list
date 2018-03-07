@@ -22,6 +22,36 @@ const actions = {
       commit(types.SET_CURRENT_LIST_ITEMS, { items: response.data });
     });
   },
+  // eslint-disable-next-line
+  createItem: ({ commit }, { name, listId }) => new Promise((resolve, reject) => {
+    axios.post(`${WP_BASE_URL}/reuselist_item`, {
+      title: name,
+      reuselist_list: listId,
+      status: 'publish', // otherwise it will be a 'draft' and not included by fetching
+    }).then((response) => {
+      resolve(response);
+    }).catch((error) => {
+      reject(error);
+    });
+  }),
+  // eslint-disable-next-line
+  editItem: ({ commit }, { id, name }) => new Promise((resolve, reject) => {
+    axios.post(`${WP_BASE_URL}/reuselist_item/${id}`, {
+      title: name,
+    }).then((response) => {
+      resolve(response);
+    }).catch((error) => {
+      reject(error);
+    });
+  }),
+  // eslint-disable-next-line
+  removeItem: ({ commit }, { id }) => new Promise((resolve, reject) => {
+    axios.delete(`${WP_BASE_URL}/reuselist_item/${id}`).then((response) => {
+      resolve(response);
+    }).catch((error) => {
+      reject(error);
+    });
+  }),
 };
 
 const mutations = {
