@@ -1,26 +1,40 @@
 <template>
   <div>
     <header-component />
-    <ul>
-      <li v-for="(item, index) in items" :key="index">
-        {{ item.title.rendered }}
-      </li>
-    </ul>
+    <items
+      :items="items"
+      @on-modal-remove-item-control="onModalRemoveItemControl"
+    />
+    <modal
+      title="Remove Item"
+      :shown="shownModalRemoveItem"
+      :enabled-submit="true"
+      @on-submit="confirmRemoveItem"
+      @on-close="cancelRemoveItem"
+    >
+      <p>This item will be permanently removed. Are you sure to continue?</p>
+    </modal>
   </div>
 </template>
 <script>
 import { mapGetters } from 'vuex';
 import { getCurrentListItems } from '../utils/common';
 import HeaderComponent from '../components/partial/Header';
+import Items from '../components/Items';
+import Modal from '../components/Modal';
 
 export default {
   name: 'ItemView',
   components: {
     HeaderComponent,
+    Items,
+    Modal,
   },
   data() {
     return {
-      path: this.$route.name,
+      listId: this.$route.params.id,
+      shownModalRemoveItem: false,
+      toRemoveId: '',
     };
   },
   computed: {
@@ -29,12 +43,37 @@ export default {
     }),
   },
   mounted() {
-    this.getCurrentListItems();
+    getCurrentListItems(this.listId);
   },
   methods: {
-    getCurrentListItems() {
-      const id = this.$route.params.id;
-      getCurrentListItems(id);
+    onModalRemoveItemControl({ id }) {
+      this.toRemoveId = id;
+      this.shownModalRemoveItem = true;
+    },
+    confirmRemoveItem() {
+      // TODO: show msg for process
+      this.shownModalRemoveItem = false;
+      this.$store.dispatch(
+        'removeItem',
+        {
+          id: this.toRemoveId,
+        },
+      ).then((response) => {
+        if (response.data.status === 'trash' && response.data.id === this.toRemoveId) {
+          getCurrentListItems(this.listId);
+        }
+        // TODO: else?
+        this.toRemoveId = '';
+        // FIXME: temp disable lint
+        // eslint-disable-next-line
+      }).catch((error) => {
+        // TODO: show error message, use a message component.
+        this.toRemoveId = '';
+      });
+    },
+    cancelRemoveItem() {
+      this.toRemoveId = '';
+      this.shownModalRemoveItem = false;
     },
   },
 };
