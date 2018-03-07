@@ -31,7 +31,7 @@ export default {
     }),
   },
   methods: {
-    submitAddList() {
+    createList() {
       this.$store.dispatch(
         'createList',
         { name: this.value },
@@ -45,6 +45,9 @@ export default {
       }).catch((error) => {
         // TODO: show error message, use a message component.
       });
+    },
+    submitAddList() {
+      this.createList();
       this.closeModal();
     },
     closeModal() {
