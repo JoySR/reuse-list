@@ -12,14 +12,16 @@
       </span>
       <span v-else>
         <span
+          :class="token ? 'admin' : 'guest'"
           @dblclick="editItem(item)"
         >{{ item.title.rendered }}</span>
       </span>
-      <button @click="removeItem(item.id)">Remove</button>
+      <button v-if="token" @click="removeItem(item.id)">Remove</button>
     </li>
   </ul>
 </template>
 <script>
+import { mapGetters } from 'vuex';
 import { getCurrentListItems } from '../utils/common';
 
 export default {
@@ -39,11 +41,18 @@ export default {
       default: () => [],
     },
   },
+  computed: {
+    ...mapGetters({
+      token: 'getToken',
+    }),
+  },
   methods: {
     editItem(item) {
-      this.editingId = item.id;
-      this.editingName = item.title.rendered;
-      this.editing = true;
+      if (this.token) {
+        this.editingId = item.id;
+        this.editingName = item.title.rendered;
+        this.editing = true;
+      }
     },
     confirmEdit() {
       this.$store.dispatch(
