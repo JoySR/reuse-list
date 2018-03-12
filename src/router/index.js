@@ -41,7 +41,8 @@ const routes = [
 ];
 
 const router = new Router({
-  mode: 'history',
+  // FIXME: use 'history' mode needs backend support. Fix it and uncomment next line
+  // mode: 'history',
   routes,
 });
 

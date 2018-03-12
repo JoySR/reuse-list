@@ -14,6 +14,19 @@
     >
       <p>This list will be permanently removed. Are you sure to continue?</p>
     </modal>
+    <modal
+      title="Welcome"
+      :shown="showWelcome"
+      :enabled-submit="true"
+      @on-submit="closeWelcome"
+      @on-close="closeWelcome"
+    >
+      <p>欢迎！</p>
+      <p>项目还在开发中，样式开发尚未开始，所以界面非常不好看，还请耐心等待一阵子。</p>
+      <p>原本使用的是自定制的 WordPress REST API，无奈局限性太多，索性用 PHP 重写了一遍接口，所以前端的开发停滞了几天。</p>
+      <p>不过有了接口，剩下的就都是愉快的前端工作啦！自己非常期待呢！</p>
+      <p>测试用账号 => 用户名：test，密码：test</p>
+    </modal>
   </div>
 </template>
 <script>
@@ -34,6 +47,7 @@ export default {
     return {
       shownModalRemoveList: false,
       toRemoveId: '',
+      showWelcome: localStorage.getItem('first') !== '0',
     };
   },
   computed: {
@@ -73,6 +87,10 @@ export default {
     cancelRemoveList() {
       this.toRemoveId = '';
       this.shownModalRemoveList = false;
+    },
+    closeWelcome() {
+      this.showWelcome = false;
+      localStorage.setItem('first', '0');
     },
   },
 };
