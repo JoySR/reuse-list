@@ -3,7 +3,7 @@ const getToken = (name = 'token') => {
     .map(s => s.replace(/\s+=\s+/, '=').split('='));
 
   for (let i = 0; i < cookie.length; i += 1) {
-    if (cookie[i][0] && cookie[i][0] === name) {
+    if (cookie[i][0] && cookie[i][0].trim() === name) {
       return cookie[i][1];
     }
   }
