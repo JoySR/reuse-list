@@ -54,7 +54,11 @@ export default {
     logOut() {
       this.$store.dispatch('clearToken', {
         username: localStorage.getItem('username'),
-      }).then(() => {}).catch(() => {});
+      }).then(() => {
+        // TODO: use message component to show msg.
+      }).catch(() => {
+        // TODO: show error message, use a message component.
+      });
     },
     searchAll() {
       this.$store.dispatch(
