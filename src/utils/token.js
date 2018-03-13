@@ -1,9 +1,9 @@
 const getToken = (name = 'token') => {
-  const cookie = document.cookie.replace(/\s+;\s+/, ';').split(';')
-    .map(s => s.replace(/\s+=\s+/, '=').split('='));
+  const cookie = document.cookie.replace(/\s*;\s*/g, ';').split(';')
+    .map(s => s.replace(/\s*=\s*/g, '=').split('='));
 
   for (let i = 0; i < cookie.length; i += 1) {
-    if (cookie[i][0] && cookie[i][0].trim() === name) {
+    if (cookie[i][0] && cookie[i][0] === name) {
       return cookie[i][1];
     }
   }
