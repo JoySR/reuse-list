@@ -32,6 +32,7 @@ export default {
         username: this.username,
         password: this.password,
       }).then(() => {
+        localStorage.setItem('username', this.username);
         this.$router.push('/');
       }).catch((error) => {
         // TODO: more possibility.

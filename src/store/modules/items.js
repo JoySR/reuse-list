@@ -1,33 +1,41 @@
+import axios from 'axios';
 import types from '../mutation-types';
-import axios from '../../utils/api';
-import { WP_BASE_URL } from '../../utils/config';
+import { ITEM_BASE_URL } from '../../config/config';
+import tokenConfig from '../../utils/token';
 
 const initialState = {
-  allItems: [],
   currentListItems: [],
 };
 
 const actions = {
-  fetchAllItems: ({ commit }) => {
-    axios.get(
-      `${WP_BASE_URL}/reuselist_item`,
-    ).then((response) => {
-      commit(types.SET_ALL_ITEMS, { items: response.data });
-    });
-  },
   fetchCurrentListItems: ({ commit }, { listId }) => {
     axios.get(
-      `${WP_BASE_URL}/reuselist_item?reuselist_list=${listId}`,
+      `${ITEM_BASE_URL}/all.php?list_id=${listId}`,
     ).then((response) => {
-      commit(types.SET_CURRENT_LIST_ITEMS, { items: response.data });
+      const data = response.data;
+      if (data.status) {
+        commit(types.SET_CURRENT_LIST_ITEMS, { items: data.items });
+      }
+      // FIXME: add error handling
+      // FIXME: temp disable lint
+      // eslint-disable-next-line
+    }).catch((error) => {
+      // TODO: show error message, use a message component.
     });
   },
   // eslint-disable-next-line
   createItem: ({ commit }, { name, listId }) => new Promise((resolve, reject) => {
-    axios.post(`${WP_BASE_URL}/reuselist_item`, {
-      title: name,
-      reuselist_list: listId,
-      status: 'publish', // otherwise it will be a 'draft' and not included by fetching
+    const token = tokenConfig.get('token');
+    axios({
+      url: `${ITEM_BASE_URL}/add.php`,
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data: {
+        list_id: listId,
+        name,
+      },
     }).then((response) => {
       resolve(response);
     }).catch((error) => {
@@ -36,8 +44,17 @@ const actions = {
   }),
   // eslint-disable-next-line
   editItem: ({ commit }, { id, name }) => new Promise((resolve, reject) => {
-    axios.post(`${WP_BASE_URL}/reuselist_item/${id}`, {
-      title: name,
+    const token = tokenConfig.get('token');
+    axios({
+      url: `${ITEM_BASE_URL}/edit.php`,
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data: {
+        id,
+        name,
+      },
     }).then((response) => {
       resolve(response);
     }).catch((error) => {
@@ -46,7 +63,17 @@ const actions = {
   }),
   // eslint-disable-next-line
   removeItem: ({ commit }, { id }) => new Promise((resolve, reject) => {
-    axios.delete(`${WP_BASE_URL}/reuselist_item/${id}`).then((response) => {
+    const token = tokenConfig.get('token');
+    axios({
+      url: `${ITEM_BASE_URL}/delete.php`,
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data: {
+        id,
+      },
+    }).then((response) => {
       resolve(response);
     }).catch((error) => {
       reject(error);
@@ -55,19 +82,13 @@ const actions = {
 };
 
 const mutations = {
-  [types.SET_ALL_ITEMS](state, { items }) {
-    state.allItems = items;
-  },
   [types.SET_CURRENT_LIST_ITEMS](state, { items }) {
     state.currentListItems = items;
   },
 };
 
 const getters = {
-  allItems: state => state.allItems,
-  allItemNames: state => state.allItems.map(item => item.title.rendered),
   currentListItems: state => state.currentListItems,
-  currentListItemNames: state => state.currentListItems.map(item => item.title.rendered),
 };
 
 export default {

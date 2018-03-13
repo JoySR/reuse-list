@@ -36,10 +36,16 @@ export default {
         'createList',
         { name: this.value },
       ).then((response) => {
-        if (response.data.name && response.data.name === this.value) {
-          this.$store.dispatch('fetchLists');
+        const data = response.data;
+        if (data.status) {
+          if (this.$route.path === '/') {
+            this.$store.dispatch('fetchLists');
+          } else {
+            this.$router.push('/');
+          }
+          this.resetModal();
         }
-        // TODO: else?
+        // FIXME: add error handling
         // FIXME: temp disable lint
         // eslint-disable-next-line
       }).catch((error) => {
@@ -50,11 +56,18 @@ export default {
       this.createList();
       this.closeModal();
     },
+    cancelModal() {
+      this.closeModal();
+      this.resetModal();
+    },
     closeModal() {
       this.$store.dispatch(
         'setModalAddList',
         { shown: false },
       );
+    },
+    resetModal() {
+      this.value = '';
     },
   },
 };
