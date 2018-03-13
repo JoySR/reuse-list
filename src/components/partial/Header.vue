@@ -25,8 +25,8 @@
 </template>
 <script>
 import { mapGetters } from 'vuex';
-import { getLists } from '../../utils/common';
-import COMMON from '../../utils/config';
+import { getLists } from '../../utils/utilities';
+import COMMON from '../../config/config';
 import ModalAddList from '../../containers/ModalAddList';
 import ModalAddItem from '../../containers/ModalAddItem';
 
@@ -52,7 +52,13 @@ export default {
   },
   methods: {
     logOut() {
-      this.$store.dispatch('clearToken');
+      this.$store.dispatch('clearToken', {
+        username: localStorage.getItem('username'),
+      }).then(() => {
+        // TODO: use message component to show msg.
+      }).catch(() => {
+        // TODO: show error message, use a message component.
+      });
     },
     searchAll() {
       this.$store.dispatch(

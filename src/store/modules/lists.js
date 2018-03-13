@@ -1,6 +1,7 @@
+import axios from 'axios';
 import types from '../mutation-types';
-import axios from '../../utils/api';
-import { WP_BASE_URL } from '../../utils/config';
+import { LIST_BASE_URL } from '../../config/config';
+import tokenConfig from '../../utils/token';
 
 const initialState = {
   lists: [],
@@ -9,15 +10,31 @@ const initialState = {
 const actions = {
   fetchLists: ({ commit }) => {
     axios.get(
-      `${WP_BASE_URL}/reuselist_list`,
+      `${LIST_BASE_URL}/all.php`,
     ).then((response) => {
-      commit(types.SET_LISTS, { lists: response.data });
+      const data = response.data;
+      if (data.status) {
+        commit(types.SET_LISTS, { lists: data.lists });
+      }
+      // FIXME: add error handling
+      // FIXME: temp disable lint
+      // eslint-disable-next-line
+    }).catch((error) => {
+      // TODO: show error message, use a message component.
     });
   },
   // eslint-disable-next-line
   createList: ({ commit }, { name }) => new Promise((resolve, reject) => {
-    axios.post(`${WP_BASE_URL}/reuselist_list`, {
-      name,
+    const token = tokenConfig.get('token');
+    axios({
+      url: `${LIST_BASE_URL}/add.php`,
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data: {
+        name,
+      },
     }).then((response) => {
       resolve(response);
     }).catch((error) => {
@@ -26,8 +43,17 @@ const actions = {
   }),
   // eslint-disable-next-line
   editList: ({ commit }, { id, name }) => new Promise((resolve, reject) => {
-    axios.post(`${WP_BASE_URL}/reuselist_list/${id}`, {
-      name,
+    const token = tokenConfig.get('token');
+    axios({
+      url: `${LIST_BASE_URL}/edit.php`,
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data: {
+        id,
+        name,
+      },
     }).then((response) => {
       resolve(response);
     }).catch((error) => {
@@ -36,7 +62,17 @@ const actions = {
   }),
   // eslint-disable-next-line
   removeList: ({ commit }, { id }) => new Promise((resolve, reject) => {
-    axios.delete(`${WP_BASE_URL}/reuselist_list/${id}?force=true`).then((response) => {
+    const token = tokenConfig.get('token');
+    axios({
+      url: `${LIST_BASE_URL}/delete.php`,
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data: {
+        id,
+      },
+    }).then((response) => {
       resolve(response);
     }).catch((error) => {
       reject(error);

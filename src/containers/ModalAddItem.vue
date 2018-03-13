@@ -30,6 +30,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import Modal from '../components/Modal';
+import { getCurrentListItems } from '../utils/utilities';
 
 export default {
   components: {
@@ -61,12 +62,16 @@ export default {
           listId: this.selectedList,
         },
       ).then((response) => {
-        if (response.data.title && response.data.title.rendered === this.value) {
-          // show items of the list where the new item added in
-          this.$router.push(`/list/${this.selectedList}/items`);
+        const data = response.data;
+        if (data.status) {
+          if (this.$route.path === `/list/${this.selectedList}/items`) {
+            getCurrentListItems(this.selectedList);
+          } else {
+            this.$router.push(`/list/${this.selectedList}/items`);
+          }
           this.resetModal();
         }
-        // TODO: else?
+        // FIXME: add error handling
         // FIXME: temp disable lint
         // eslint-disable-next-line
       }).catch((error) => {

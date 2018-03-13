@@ -18,7 +18,7 @@
 </template>
 <script>
 import { mapGetters } from 'vuex';
-import { getCurrentListItems } from '../utils/common';
+import { getCurrentListItems } from '../utils/utilities';
 import HeaderComponent from '../components/partial/Header';
 import Items from '../components/Items';
 import Modal from '../components/Modal';
@@ -59,10 +59,11 @@ export default {
           id: this.toRemoveId,
         },
       ).then((response) => {
-        if (response.data.status === 'trash' && response.data.id === this.toRemoveId) {
+        const data = response.data;
+        if (data.status) {
           getCurrentListItems(this.listId);
         }
-        // TODO: else?
+        // FIXME: add error handling
         this.toRemoveId = '';
         // FIXME: temp disable lint
         // eslint-disable-next-line
