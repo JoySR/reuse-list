@@ -12,12 +12,15 @@
        />
       <button @click="searchAll">Search</button>
     </div>
-    <div class="admin-area">
+    <div v-if="token" class="admin-area">
       <!-- TODO: 大屏则分开两个添加 (list, item) 和 admin，小屏则放到下拉菜单 -->
-      <button v-if="token" @click="openModalAddList">Add List</button>
-      <button v-if="token" @click="openModalAddItem">Add Item</button>
-      <button v-if="token" @click="logOut">Log Out</button>
-      <router-link v-else :to="logInPath">Log In</router-link>
+      <button @click="openModalAddList">Add List</button>
+      <button @click="openModalAddItem">Add Item</button>
+      <button @click="logOut">Log Out</button>
+    </div>
+    <div class="admin-area" v-else>
+      <router-link :to="logInPath">Log In</router-link>
+      <router-link :to="registerPath">Register</router-link>
     </div>
     <modal-add-list />
     <modal-add-item />
@@ -39,6 +42,7 @@ export default {
     return {
       title: COMMON.TITLE,
       logInPath: { name: 'Login' },
+      registerPath: { name: 'Register' },
       keyword: '',
     };
   },
