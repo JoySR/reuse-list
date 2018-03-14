@@ -10,6 +10,7 @@
 - [ ] batch delete
 - [ ] user has his separated lists and items.
 - [ ] forget password / find password back with email
+- [ ] admin area: change username(if has email) / password / email
 
 ## Build Setup
 
