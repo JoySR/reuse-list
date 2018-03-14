@@ -3,6 +3,7 @@ import Router from 'vue-router';
 import ListView from '../pages/ListView';
 import ItemView from '../pages/ItemView';
 import Login from '../pages/Login';
+import Register from '../pages/Register';
 import Admin from '../pages/Admin';
 import tokenConfig from '../utils/token';
 import store from '../store';
@@ -29,6 +30,11 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: Login,
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: Register,
   },
   {
     path: '/admin',

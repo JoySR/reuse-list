@@ -8,6 +8,8 @@
 - [ ] trash and restore list(s)
 - [ ] add option: when all items are checked, restore them immediately, or manually restore checked items in a list.
 - [ ] batch delete
+- [ ] user has his separated lists and items.
+- [ ] forget password / find password back with email
 
 ## Build Setup
 
