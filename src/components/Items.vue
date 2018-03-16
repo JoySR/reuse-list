@@ -11,6 +11,12 @@
         <button @click="cancelEdit">Cancel</button>
       </span>
       <span v-else>
+        <input
+          title="check/uncheck item"
+          type="checkbox"
+          :value="item.checked"
+          @change="handleCheck(item)"
+        />
         <span
           :class="token ? 'admin' : 'guest'"
           @dblclick="editItem(item)"
@@ -47,6 +53,21 @@ export default {
     }),
   },
   methods: {
+    handleCheck({ id, checked }) {
+      this.$store.dispatch(
+        'changeItemStatus',
+        {
+          id,
+          checked: !checked,
+        },
+      ).then(() => {
+        getCurrentListItems(this.listId);
+        // FIXME: temp disable lint
+        // eslint-disable-next-line
+      }).catch((error) => {
+        // TODO: show error message, use a message component.
+      });
+    },
     editItem(item) {
       if (this.token) {
         this.editingId = item.id;
