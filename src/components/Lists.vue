@@ -25,7 +25,7 @@
 </template>
 <script>
 import { mapGetters } from 'vuex';
-import { getLists } from '../utils/common';
+import { getLists } from '../utils/utilities';
 
 export default {
   data() {
@@ -65,11 +65,11 @@ export default {
           name: this.editingName,
         },
       ).then((response) => {
-        // TODO
-        if (response.data.name && response.data.name === this.editingName) {
+        const data = response.data;
+        if (data.status) {
           getLists();
         }
-        // TODO: else?
+        // FIXME: add error handling
         this.cancelEdit();
         // FIXME: temp disable lint
         // eslint-disable-next-line

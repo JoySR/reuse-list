@@ -20,7 +20,7 @@
         <span
           :class="token ? 'admin' : 'guest'"
           @dblclick="editItem(item)"
-        >{{ item.title.rendered }}</span>
+        >{{ item.name }}</span>
       </span>
       <button v-if="token" @click="removeItem(item.id)">Remove</button>
     </li>
@@ -28,7 +28,7 @@
 </template>
 <script>
 import { mapGetters } from 'vuex';
-import { getCurrentListItems } from '../utils/common';
+import { getCurrentListItems } from '../utils/utilities';
 
 export default {
   name: 'Items',
@@ -71,7 +71,7 @@ export default {
     editItem(item) {
       if (this.token) {
         this.editingId = item.id;
-        this.editingName = item.title.rendered;
+        this.editingName = item.name;
         this.editing = true;
       }
     },
@@ -83,11 +83,11 @@ export default {
           name: this.editingName,
         },
       ).then((response) => {
-        // TODO
-        if (response.data.title && response.data.title.raw === this.editingName) {
+        const data = response.data;
+        if (data.status) {
           getCurrentListItems(this.listId);
         }
-        // TODO: else?
+        // FIXME: add error handling
         this.cancelEdit();
         // FIXME: temp disable lint
         // eslint-disable-next-line
