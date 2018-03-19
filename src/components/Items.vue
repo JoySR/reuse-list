@@ -12,13 +12,18 @@
       </span>
       <span v-else>
         <input
+          v-if="token"
           title="check/uncheck item"
           type="checkbox"
-          :value="item.checked"
-          @change="handleCheck(item)"
+          :checked="+item.checked"
+          @change="handleCheck(item, listId)"
         />
         <span
-          :class="token ? 'admin' : 'guest'"
+          :class="{
+            admin: token,
+            guest: !token,
+            checked: !!(+item.checked)
+          }"
           @dblclick="editItem(item)"
         >{{ item.name }}</span>
       </span>
@@ -28,6 +33,7 @@
 </template>
 <script>
 import { mapGetters } from 'vuex';
+import { handleCheck } from '../controllers/item';
 import { getCurrentListItems } from '../utils/utilities';
 
 export default {
@@ -53,20 +59,8 @@ export default {
     }),
   },
   methods: {
-    handleCheck({ id, checked }) {
-      this.$store.dispatch(
-        'changeItemStatus',
-        {
-          id,
-          checked: !checked,
-        },
-      ).then(() => {
-        getCurrentListItems(this.listId);
-        // FIXME: temp disable lint
-        // eslint-disable-next-line
-      }).catch((error) => {
-        // TODO: show error message, use a message component.
-      });
+    handleCheck(item, listId) {
+      handleCheck(item, listId);
     },
     editItem(item) {
       if (this.token) {
@@ -107,3 +101,8 @@ export default {
   },
 };
 </script>
+<style scoped>
+  .checked {
+    text-decoration: line-through;
+  }
+</style>

@@ -79,6 +79,30 @@ const actions = {
       reject(error);
     });
   }),
+  // eslint-disable-next-line
+  changeItemStatus: ({ commit }, { id, checked }) => new Promise((resolve, reject) => {
+    const token = tokenConfig.get('token');
+    axios({
+      url: `${ITEM_BASE_URL}/check.php`,
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data: {
+        id,
+        checked: checked ? 1 : 0,
+      },
+    }).then((response) => {
+      const data = response.data;
+      if (data.status) {
+        resolve();
+      } else {
+        reject(data.msg);
+      }
+    }).catch((error) => {
+      reject(error);
+    });
+  }),
 };
 
 const mutations = {
