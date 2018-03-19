@@ -1,10 +1,13 @@
 <template>
   <div>
     <header-component />
-    <items
-      :items="items"
-      @on-modal-remove-item-control="onModalRemoveItemControl"
-    />
+    <main>
+      <h3>{{ currentListName }}</h3>
+      <items
+        :items="items"
+        @on-modal-remove-item-control="onModalRemoveItemControl"
+      />
+    </main>
     <modal
       title="Remove Item"
       :shown="shownModalRemoveItem"
@@ -35,6 +38,7 @@ export default {
       listId: this.$route.params.id,
       shownModalRemoveItem: false,
       toRemoveId: '',
+      currentListName: '',
     };
   },
   computed: {
@@ -44,6 +48,13 @@ export default {
   },
   mounted() {
     getCurrentListItems(this.listId);
+    this.$store.dispatch('fetchCurrentList', { id: this.listId }).then((list) => {
+      this.currentListName = list.name;
+      this.$store.dispatch('setCurrentList', { list });
+    });
+  },
+  beforeDestroy() {
+    this.$store.dispatch('removeCurrentList');
   },
   methods: {
     onModalRemoveItemControl({ id }) {

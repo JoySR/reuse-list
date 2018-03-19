@@ -2,7 +2,7 @@
   <div class="header">
     <div class="site-title">
       <!-- TODO: Logo(/favicon) -->
-      <p>{{ title }}</p>
+      <router-link to="/">{{ title }}</router-link>
     </div>
     <div class="site-search">
        <input

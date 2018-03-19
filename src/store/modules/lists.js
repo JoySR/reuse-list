@@ -78,17 +78,49 @@ const actions = {
       reject(error);
     });
   }),
+  // eslint-disable-next-line
+  fetchCurrentList: ({ commit }, { id }) => new Promise((resolve, reject) => {
+    axios.get(
+      `${LIST_BASE_URL}/single.php?list_id=${id}`,
+    ).then((response) => {
+      const data = response.data;
+      if (data.status) {
+        resolve(data.list);
+      }
+      // FIXME: add error handling
+      // FIXME: temp disable lint
+      // eslint-disable-next-line
+    }).catch((error) => {
+      // TODO: show error message, use a message component.
+      reject();
+    });
+  }),
+  setCurrentList: ({ commit }, { list }) => {
+    commit(types.SET_CURRENT_LIST, { list });
+  },
+  removeCurrentList: ({ commit }) => {
+    commit(types.REMOVE_CURRENT_LIST);
+  },
 };
 
 const mutations = {
   [types.SET_LISTS](state, { lists }) {
     state.lists = lists;
   },
+  [types.SET_CURRENT_LIST](state, { list }) {
+    state.currentList = list;
+  },
+  [types.REMOVE_CURRENT_LIST](state) {
+    if (state.currentList) {
+      state.currentList = null;
+    }
+  },
 };
 
 const getters = {
   allLists: state => state.lists,
   allListNames: state => state.lists.map(list => list.name),
+  currentList: state => state.currentList,
 };
 
 export default {
