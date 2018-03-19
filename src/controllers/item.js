@@ -4,6 +4,7 @@ export const getCurrentListItems = (id) => {
   store.dispatch('fetchCurrentListItems', { listId: id });
 };
 
+// TODO: is there a better way to use listId without passing it as an argument?
 export const handleCheck = (item, listId) => {
   store.dispatch(
     'changeItemStatus',
