@@ -12,6 +12,7 @@
 - [ ] forget password / find password back with email
 - [ ] admin area: change username(if has email) / password / email
 - [ ] export data as JSON
+- [ ] Web Accessibility
 
 ## Build Setup
 
