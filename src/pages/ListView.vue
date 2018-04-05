@@ -1,6 +1,5 @@
 <template>
-  <div>
-    <header-component />
+  <layout>
     <lists
       :lists="lists"
       @on-modal-remove-list-control="onModalRemoveListControl"
@@ -14,19 +13,19 @@
     >
       <p>This list will be permanently removed. Are you sure to continue?</p>
     </modal>
-  </div>
+  </layout>
 </template>
 <script>
 import { mapGetters } from 'vuex';
 import { getLists } from '../utils/utilities';
-import HeaderComponent from '../components/partial/Header';
+import Layout from '../components/Layout';
 import Lists from '../components/Lists';
 import Modal from '../components/Modal';
 
 export default {
   name: 'ListView',
   components: {
-    HeaderComponent,
+    Layout,
     Lists,
     Modal,
   },
