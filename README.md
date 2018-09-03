@@ -16,6 +16,8 @@
 ## Build Setup
 
 ``` bash
+cd client
+
 # install dependencies
 npm install
 
